@@ -1,10 +1,10 @@
-import { motion } from "motion/react";
-import { Code2, Globe } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { ChevronLeft, ChevronRight, Code2, Globe } from "lucide-react";
 import { useLanguage } from "@/src/lib/LanguageContext";
 
 const CustomPaletteIcon = ({ className }: { className?: string }) => (
   <svg
-    t="1776074346720"
     className={`icon ${className || ""}`}
     viewBox="0 0 1024 1024"
     version="1.1"
@@ -21,7 +21,6 @@ const CustomPaletteIcon = ({ className }: { className?: string }) => (
 
 const CustomZapIcon = ({ className }: { className?: string }) => (
   <svg
-    t="1776079736596"
     className={`icon ${className || ""}`}
     viewBox="0 0 1024 1024"
     version="1.1"
@@ -38,12 +37,14 @@ const CustomZapIcon = ({ className }: { className?: string }) => (
 
 export default function About() {
   const { t } = useLanguage();
+  const avatarImages = ["/touxiang/IMG_20260413_205433.png", "/touxiang/IMG_20260418_165544.png"];
+  const [avatarIndex, setAvatarIndex] = useState(0);
 
   const skills = [
     { icon: Code2, title: t.about.skills.dev.title, desc: t.about.skills.dev.desc },
     { icon: CustomPaletteIcon, title: t.about.skills.design.title, desc: t.about.skills.design.desc },
     { icon: CustomZapIcon, title: t.about.skills.perf.title, desc: t.about.skills.perf.desc },
-    { icon: Globe, title: t.about.skills.strategy.title, desc: t.about.skills.strategy.title },
+    { icon: Globe, title: t.about.skills.strategy.title, desc: t.about.skills.strategy.desc },
   ];
 
   return (
@@ -106,20 +107,56 @@ export default function About() {
               className="order-1 lg:order-2 flex justify-center lg:justify-end"
             >
               <div className="relative w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px]">
-                <div className="aspect-square rounded-2xl overflow-hidden bg-transparent">
-                  <img
-                    src="/touxiang/IMG_20260413_205433.png"
-                    alt="Avatar"
-                    className="w-full h-full object-contain"
-                    referrerPolicy="no-referrer"
-                  />
+                <div className="relative aspect-square rounded-2xl overflow-hidden bg-transparent">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={avatarImages[avatarIndex]}
+                      src={avatarImages[avatarIndex]}
+                      alt="Avatar"
+                      className="w-full h-full object-contain"
+                      referrerPolicy="no-referrer"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                    />
+                  </AnimatePresence>
+                  <button
+                    type="button"
+                    onClick={() => setAvatarIndex((prev) => (prev - 1 + avatarImages.length) % avatarImages.length)}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/35 p-1.5 text-white transition-colors hover:bg-black/55"
+                    aria-label="上一张头像"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAvatarIndex((prev) => (prev + 1) % avatarImages.length)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/35 p-1.5 text-white transition-colors hover:bg-black/55"
+                    aria-label="下一张头像"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="mt-3 flex items-center justify-center gap-2">
+                  {avatarImages.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setAvatarIndex(index)}
+                      className={`h-2 w-2 rounded-full transition-all ${
+                        avatarIndex === index ? "bg-primary w-5" : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
+                      }`}
+                      aria-label={`切换到第 ${index + 1} 张头像`}
+                    />
+                  ))}
                 </div>
                 {/* 装饰性元素 */}
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
                 <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl" />
                 {/* 文字说明 */}
                 <p className="mt-4 text-center text-sm sm:text-base text-muted-foreground font-sans">
-                  一名来自江苏的计算机系学生
+                  {t.about.subtitle}
                 </p>
               </div>
             </motion.div>

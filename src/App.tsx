@@ -10,14 +10,30 @@ import Hero from "./components/Hero";
 import Projects from "./components/Projects";
 import About from "./components/About";
 import Experience from "./components/Experience";
-
+import LeaveNote from "./components/LeaveNote";
 import Footer from "./components/Footer";
+import MusicPlayerPage from "./components/MusicPlayerPage";
+import GamesPage from "./components/GamesPage";
+import AttachmentTest from "./components/AttachmentTest";
 
 export default function App() {
+  const pathname = typeof window !== "undefined" ? window.location.pathname.replace(/\/+$/, "") || "/" : "/";
+
   useEffect(() => {
-    // Force dark mode
     document.documentElement.classList.add("dark");
   }, []);
+
+  if (pathname === "/player") {
+    return <MusicPlayerPage />;
+  }
+
+  if (pathname === "/games") {
+    return <GamesPage />;
+  }
+
+  if (pathname === "/test") {
+    return <AttachmentTest />;
+  }
 
   return (
     <LanguageProvider>
@@ -31,6 +47,8 @@ export default function App() {
           <Projects />
           <div className="w-full h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
           <Experience />
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+          <LeaveNote />
           <div className="w-full h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         </main>
         <Footer />

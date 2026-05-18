@@ -112,7 +112,7 @@ export default function Experience() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
         >
-          我日常使用的各类软件工具，涵盖开发、设计、效率等多个领域
+          {t.experience.desc}
         </motion.p>
 
         {/* macOS Windows Grid - 固定布局 */}
@@ -160,7 +160,7 @@ export default function Experience() {
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <p className="text-sm text-muted-foreground">
-            以上是我推荐的一些优秀软件，它们极大地提升了我的工作效率
+            {t.experience.subtitle}
           </p>
         </motion.div>
       </div>

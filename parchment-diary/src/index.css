@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Ma+Shan+Zheng&family=Mrs+Saint+Delafield&family=Zhi+Mang+Xing&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Palatino", "Palatino Linotype", "Georgia", "Times New Roman", serif;
+  --font-cursive: "Apple Chancery", "Textile", "Zapf Chancery", cursive;
+  /* Keeping the Chinese specific fonts as they were requested originally but mapping them to the new theme names if needed */
+  --font-shoujin: "Ma Shan Zheng", cursive;
+  --font-round: "Mrs Saint Delafield", cursive;
+  --font-handwriting: "Zhi Mang Xing", cursive;
+  
+  --color-paper: #fdfaf0;
+  --color-bg-base: #e8e2d2;
+  --color-ink: #3d3a33;
+  --color-burnt: #bfa888;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--color-bg-base)] text-[var(--color-ink)] font-serif;
+    background-image: 
+      radial-gradient(circle at 50% 50%, transparent 80%, rgba(0,0,0,0.02) 100%),
+      repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+  }
+}
+
+/* Torn/Jagged Edge Variants from Artistic Flair */
+.clip-path-1 { clip-path: polygon(1% 1%, 98% 3%, 100% 97%, 2% 99%); }
+.clip-path-2 { clip-path: polygon(2% 0%, 100% 2%, 97% 98%, 0% 100%); }
+.clip-path-3 { clip-path: polygon(0% 4%, 96% 0%, 99% 96%, 4% 100%); }
+.clip-path-4 { clip-path: polygon(3% 2%, 99% 1%, 96% 99%, 1% 97%); }
+
+.card-paper {
+  @apply bg-[var(--color-paper)] relative transition-transform duration-300;
+  border: 1px solid rgba(191, 168, 136, 0.3);
+  box-shadow: 2px 10px 20px rgba(0,0,0,0.08);
+}
+
+.card-paper::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  box-shadow: inset 0 0 15px rgba(191, 168, 136, 0.4);
+  pointer-events: none;
+}
+
+@keyframes fadeInHandwriting {
+  from { opacity: 0; transform: translateY(5px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.handwriting-transition {
+  animation: fadeInHandwriting 0.6s ease-out forwards;
+}
+
+/* Custom logo style from theme */
+.logo-underline {
+  @apply inline-block pb-1;
+  border-bottom: 1px solid var(--color-ink);
+}

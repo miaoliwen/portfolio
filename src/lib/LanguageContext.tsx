@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useCallback, ReactNode, useEffect, useMemo } from "react";
 import { Language, translations } from "./translations";
+import { safeGetItem, safeSetItem } from "./storage";
 
 type LanguageAction = { type: "SET_LANGUAGE"; payload: Language };
 
@@ -20,7 +21,7 @@ function getBrowserLanguage(): Language {
 
 function getInitialLanguage(): Language {
   if (typeof window === "undefined") return "zh";
-  const saved = localStorage.getItem("language");
+  const saved = safeGetItem("language");
   if (saved === "en" || saved === "zh") return saved;
   return getBrowserLanguage();
 }
@@ -48,7 +49,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const t = translations[language];
 
   useEffect(() => {
-    localStorage.setItem("language", language);
+    safeSetItem("language", language);
     const langTag = language === "zh" ? "zh-CN" : "en";
     document.documentElement.lang = langTag;
     const metaTag = document.querySelector('meta[http-equiv="Content-Language"]');
