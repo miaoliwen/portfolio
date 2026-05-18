@@ -17,12 +17,19 @@ import GamesPage from "./components/GamesPage";
 import AttachmentTest from "./components/AttachmentTest";
 
 export default function App() {
-  const pathname = typeof window !== "undefined" ? window.location.pathname.replace(/\/+$/, "") || "/" : "/";
+  // 获取路径名，移除末尾斜杠，默认为 "/"
+  const pathname = (() => {
+    if (typeof window === "undefined") return "/";
+    const path = window.location.pathname.replace(/\/+$/, "") || "/";
+    return path;
+  })();
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
   }, []);
 
+  // 根据 pathname 返回不同的页面组件
+  // 注意：需要精确匹配路径
   if (pathname === "/player") {
     return <MusicPlayerPage />;
   }
