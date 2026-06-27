@@ -61,7 +61,7 @@ npm run lint
 ## 可用脚本
 
 - `npm run dev`：启动 Vite 开发服务器（端口 3000）。
-- `npm run build`：打包生产版本。
+- `npm run build`：打包生产版本，且会先构建 `ai英语解题助手/` 子应用。
 - `npm run preview`：本地预览生产构建产物。
 - `npm run lint`：执行 TypeScript 类型检查。
 - `npm run clean`：删除 `dist` 目录（在 Windows PowerShell 中可考虑改为跨平台命令）。
@@ -106,6 +106,10 @@ aether-portfolio/
    - 自动计算请假时长。
    - 支持按中文/英文模板生成请假文本。
    - 可生成图片预览并导出。
+
+- `AI 英语解题助手`：
+   - 作为独立的 `/study` 子应用发布到同一站点。
+   - 生产构建会先打包该子应用，再构建主站。
 
 ## 二次开发建议
 

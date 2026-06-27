@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface Question {
   id: string;
@@ -26,6 +26,7 @@ const AttachmentTest = () => {
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [highlightedCards, setHighlightedCards] = useState<Set<string>>(new Set());
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const questions: Question[] = [
     { id: 'Q1', dimension: 'anxiety', text: '我经常担心我的伴侣不再在乎我或不再爱我。' },
@@ -96,6 +97,12 @@ const AttachmentTest = () => {
       const newHighlighted = new Set(unanswered.map(q => q.id));
       setHighlightedCards(newHighlighted);
       setErrorMsg('请完成所有题目后再查看结果。');
+      setShowResult(false);
+      
+      // 自动移除高亮
+      setTimeout(() => {
+        setHighlightedCards(new Set());
+      }, 2500);
       return;
     }
 
@@ -134,129 +141,351 @@ const AttachmentTest = () => {
     console.log('依恋类型测试结果 (JSON):', JSON.stringify(jsonOutput, null, 2));
   };
 
+  // 滚动到结果
+  useEffect(() => {
+    if (showResult && resultRef.current) {
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  }, [showResult]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5f0eb] to-[#e8e0d5] py-8 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-[#fffcf5] rounded-[2.5rem] p-8 sm:p-10 shadow-lg border border-[rgba(200,180,150,0.25)]">
-          {/* Header */}
-          <h1 className="text-3xl sm:text-4xl font-medium text-[#4a3e35] mb-2 flex items-center gap-2">
-            🧭 依恋类型测试
-            <span className="bg-[#d9c5a7] text-[#2f2820] text-sm sm:text-base px-4 py-1 rounded-full font-medium tracking-wide">
-              成人版
-            </span>
-          </h1>
-          <div className="text-base sm:text-lg text-[#6b5e53] mb-8 border-l-4 border-[#c8aa7a] pl-4 italic">
-            基于成人依恋理论（ECR-RS）· 请根据你在亲密关系中的普遍感受作答
-          </div>
-
-          {/* Questions */}
-          <div className="space-y-5 mb-8">
-            {questions.map((question, index) => (
-              <div
-                key={question.id}
-                className={`bg-[#fefaf5] rounded-[1.8rem] p-6 shadow-sm border transition-colors ${
-                  highlightedCards.has(question.id)
-                    ? 'border-[#c96b5a]'
-                    : 'border-[#ede3d6] hover:border-[#cdb79b]'
-                }`}
-              >
-                <div className="font-medium text-lg text-[#3c332b] mb-4">
-                  {index + 1}. {question.text}
-                </div>
-                <div className="flex flex-wrap gap-4">
-                  {[1, 2, 3, 4, 5].map(val => (
-                    <label key={val} className="flex items-center gap-2 cursor-pointer text-[#5b4d40] hover:text-[#2b221a] transition-colors">
-                      <input
-                        type="radio"
-                        name={question.id}
-                        value={val}
-                        checked={answers[question.id] === val}
-                        onChange={() => handleAnswerChange(question.id, val)}
-                        className="appearance-none w-5 h-5 border-2 border-[#ccb699] rounded-full cursor-pointer checked:border-[#b2905a] checked:bg-[#b2905a] focus-visible:outline-2 focus-visible:outline-[#b2905a] focus-visible:outline-offset-2"
-                      />
-                      <span className="text-sm sm:text-base">{getLabelText(val)}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Submit Button */}
-          <div className="flex justify-center mb-4">
-            <button
-              onClick={handleSubmit}
-              className="bg-gradient-to-r from-[#b2926a] to-[#8b6d4f] hover:from-[#c3a582] hover:to-[#9c7c5c] text-white font-medium text-lg px-12 py-3 rounded-full border border-[#d4b185] shadow-lg hover:shadow-xl transition-all active:translate-y-1"
-            >
-              ✨ 查看我的依恋类型
-            </button>
-          </div>
-
-          {/* Error Message */}
-          {errorMsg && (
-            <div className="text-center text-[#b85c4b] font-medium">
-              {errorMsg}
-            </div>
-          )}
-
-          {/* Results */}
-          {showResult && analysis && (
-            <div className="mt-8 p-8 bg-[#f7efe4] rounded-[2rem] border border-[#dacbbc] animate-fade-slide">
-              {/* Scores */}
-              <div className="flex justify-center gap-8 flex-wrap mb-8">
-                <div className="bg-white rounded-full px-8 py-4 text-center shadow-sm">
-                  <div className="text-4xl font-bold text-[#5e4330]">{anxietyScore}</div>
-                  <div className="text-xs sm:text-sm uppercase text-[#7b6b5c] tracking-wide mt-1">依恋焦虑</div>
-                </div>
-                <div className="bg-white rounded-full px-8 py-4 text-center shadow-sm">
-                  <div className="text-4xl font-bold text-[#5e4330]">{avoidanceScore}</div>
-                  <div className="text-xs sm:text-sm uppercase text-[#7b6b5c] tracking-wide mt-1">依恋回避</div>
-                </div>
-              </div>
-
-              {/* Attachment Style */}
-              <div className="text-center mb-8">
-                <div className="inline-block bg-[#e7d7c2] text-[#4f3b2a] text-2xl font-medium px-8 py-2 rounded-full tracking-wider">
-                  {attachmentStyle}
-                </div>
-              </div>
-
-              {/* Analysis */}
-              <div className="space-y-6">
-                <div className="bg-[#fffdf9] rounded-[1.5rem] p-6 border border-[#e3d3bf]">
-                  <h4 className="text-lg font-semibold text-[#6e5843] mb-3 flex items-center gap-2">
-                    🧠 核心特征
-                  </h4>
-                  <p className="text-[#3d3227] leading-relaxed">{analysis.characteristics}</p>
-                </div>
-
-                <div className="bg-[#fffdf9] rounded-[1.5rem] p-6 border border-[#e3d3bf]">
-                  <h4 className="text-lg font-semibold text-[#6e5843] mb-3 flex items-center gap-2">
-                    💞 关系模式与潜在雷区
-                  </h4>
-                  <p className="text-[#3d3227] leading-relaxed">{analysis.relationship_patterns}</p>
-                </div>
-
-                <div className="bg-[#fffdf9] rounded-[1.5rem] p-6 border border-[#e3d3bf]">
-                  <h4 className="text-lg font-semibold text-[#6e5843] mb-3 flex items-center gap-2">
-                    🌱 成长与改善建议
-                  </h4>
-                  <ul className="space-y-3 text-[#3d3227]">
-                    {analysis.growth_advice
-                      .split(/\d\.\s/)
-                      .filter(item => item.trim() !== '')
-                      .map((advice, idx) => (
-                        <li key={idx} className="flex gap-3">
-                          <span className="font-semibold text-[#6e5843] flex-shrink-0">{idx + 1}.</span>
-                          <span className="leading-relaxed">{advice.trim()}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
+    <div style={{
+      fontFamily: "'Segoe UI', 'Roboto', 'Noto Sans', system-ui, -apple-system, sans-serif",
+      background: 'linear-gradient(145deg, #f5f0eb 0%, #e8e0d5 100%)',
+      minHeight: '100vh',
+      padding: '2rem 1.5rem',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#3e3a37'
+    }}>
+      <div style={{
+        maxWidth: '720px',
+        width: '100%',
+        background: '#fffcf5',
+        backdropFilter: 'blur(18px)',
+        WebkitBackdropFilter: 'blur(18px)',
+        boxShadow: '0 30px 50px rgba(0, 0, 0, 0.08), 0 12px 24px rgba(0, 0, 0, 0.06)',
+        borderRadius: '2.5rem',
+        padding: '2.5rem 2rem',
+        transition: 'all 0.3s ease',
+        border: '1px solid rgba(200, 180, 150, 0.25)'
+      }}>
+        {/* Header */}
+        <h1 style={{
+          fontSize: '2.2rem',
+          fontWeight: 500,
+          letterSpacing: '0.5px',
+          color: '#4a3e35',
+          marginBottom: '0.4rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          flexWrap: 'wrap'
+        }}>
+          🧭 依恋类型测试
+          <span style={{
+            background: '#d9c5a7',
+            color: '#2f2820',
+            fontSize: '1rem',
+            padding: '0.2rem 0.9rem',
+            borderRadius: '30px',
+            letterSpacing: '0.4px',
+            fontWeight: 500
+          }}>
+            成人版
+          </span>
+        </h1>
+        
+        <div style={{
+          fontSize: '1.05rem',
+          color: '#6b5e53',
+          marginBottom: '2.5rem',
+          borderLeft: '4px solid #c8aa7a',
+          paddingLeft: '1.2rem',
+          fontStyle: 'italic',
+          lineHeight: 1.5
+        }}>
+          基于成人依恋理论（ECR-RS）· 请根据你在亲密关系中的普遍感受作答
         </div>
+
+        {/* Questions */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.8rem', marginBottom: '2rem' }}>
+          {questions.map((question, index) => (
+            <div
+              key={question.id}
+              style={{
+                background: '#fefaf5',
+                borderRadius: '1.8rem',
+                padding: '1.5rem 1.8rem',
+                boxShadow: '0 6px 14px rgba(0, 0, 0, 0.02)',
+                border: `1px solid ${highlightedCards.has(question.id) ? '#c96b5a' : '#ede3d6'}`,
+                transition: '0.2s'
+              }}
+            >
+              <div style={{
+                fontWeight: 500,
+                fontSize: '1.1rem',
+                marginBottom: '1.2rem',
+                color: '#3c332b',
+                lineHeight: 1.5
+              }}>
+                {index + 1}. {question.text}
+              </div>
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                gap: '1.8rem',
+                justifyContent: 'flex-start'
+              }}>
+                {[1, 2, 3, 4, 5].map(val => (
+                  <label key={val} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    cursor: 'pointer',
+                    fontSize: '0.95rem',
+                    color: '#5b4d40',
+                    transition: 'color 0.15s',
+                    userSelect: 'none'
+                  }}>
+                    <input
+                      type="radio"
+                      name={question.id}
+                      value={val}
+                      checked={answers[question.id] === val}
+                      onChange={() => handleAnswerChange(question.id, val)}
+                      style={{
+                        appearance: 'none',
+                        width: '1.2rem',
+                        height: '1.2rem',
+                        border: `2px solid ${answers[question.id] === val ? '#b2905a' : '#ccb699'}`,
+                        borderRadius: '50%',
+                        marginRight: '0.15rem',
+                        transition: '0.2s',
+                        cursor: 'pointer',
+                        background: answers[question.id] === val ? '#b2905a' : 'white',
+                        boxShadow: answers[question.id] === val ? 'inset 0 0 0 4px #fffcf5' : 'none'
+                      }}
+                    />
+                    <span>{getLabelText(val)}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Submit Button */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
+          <button
+            onClick={handleSubmit}
+            style={{
+              background: 'linear-gradient(135deg, #b2926a 0%, #8b6d4f 100%)',
+              border: '1px solid #d4b185',
+              color: 'white',
+              fontWeight: 500,
+              fontSize: '1.2rem',
+              padding: '1rem 2.2rem',
+              borderRadius: '3rem',
+              letterSpacing: '0.8px',
+              cursor: 'pointer',
+              transition: 'background 0.25s, transform 0.15s, box-shadow 0.2s',
+              boxShadow: '0 10px 18px -8px rgba(130, 90, 50, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, #c3a582 0%, #9c7c5c 100%)';
+              e.currentTarget.style.boxShadow = '0 14px 22px -8px rgba(110, 70, 30, 0.4)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, #b2926a 0%, #8b6d4f 100%)';
+              e.currentTarget.style.boxShadow = '0 10px 18px -8px rgba(130, 90, 50, 0.3)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'translateY(1px)';
+              e.currentTarget.style.boxShadow = '0 6px 12px -4px rgba(90, 60, 30, 0.3)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 14px 22px -8px rgba(110, 70, 30, 0.4)';
+            }}
+          >
+            ✨ 查看我的依恋类型
+          </button>
+        </div>
+
+        {/* Error Message */}
+        {errorMsg && (
+          <div style={{
+            color: '#b85c4b',
+            fontWeight: 500,
+            textAlign: 'center',
+            marginTop: '1rem'
+          }}>
+            {errorMsg}
+          </div>
+        )}
+
+        {/* Results */}
+        {showResult && analysis && (
+          <div ref={resultRef} style={{
+            marginTop: '2.5rem',
+            padding: '2rem 1.8rem',
+            background: '#f7efe4',
+            borderRadius: '2rem',
+            border: '1px solid #dacbbc',
+            animation: 'fadeSlide 0.5s ease'
+          }}>
+            {/* Scores */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '2.5rem',
+              flexWrap: 'wrap',
+              marginBottom: '1.8rem'
+            }}>
+              <div style={{
+                background: 'white',
+                borderRadius: '2rem',
+                padding: '0.8rem 1.8rem',
+                textAlign: 'center',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.03)'
+              }}>
+                <small style={{
+                  display: 'block',
+                  color: '#7b6b5c',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.6px',
+                  fontSize: '0.8rem',
+                  marginBottom: '0.2rem'
+                }}>依恋焦虑</small>
+                <span style={{
+                  fontSize: '2rem',
+                  fontWeight: 600,
+                  color: '#5e4330'
+                }}>{anxietyScore}</span>
+              </div>
+              <div style={{
+                background: 'white',
+                borderRadius: '2rem',
+                padding: '0.8rem 1.8rem',
+                textAlign: 'center',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.03)'
+              }}>
+                <small style={{
+                  display: 'block',
+                  color: '#7b6b5c',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.6px',
+                  fontSize: '0.8rem',
+                  marginBottom: '0.2rem'
+                }}>依恋回避</small>
+                <span style={{
+                  fontSize: '2rem',
+                  fontWeight: 600,
+                  color: '#5e4330'
+                }}>{avoidanceScore}</span>
+              </div>
+            </div>
+
+            {/* Attachment Style */}
+            <div style={{ textAlign: 'center', marginBottom: '1.6rem' }}>
+              <div style={{
+                fontSize: '1.8rem',
+                fontWeight: 500,
+                color: '#4f3b2a',
+                background: '#e7d7c2',
+                display: 'inline-block',
+                padding: '0.4rem 2.2rem',
+                borderRadius: '3rem',
+                letterSpacing: '1px'
+              }}>
+                {attachmentStyle}
+              </div>
+            </div>
+
+            {/* Analysis */}
+            <div style={{
+              background: '#fffdf9',
+              borderRadius: '1.5rem',
+              padding: '1.6rem',
+              border: '1px solid #e3d3bf'
+            }}>
+              <h4 style={{
+                fontWeight: 600,
+                color: '#6e5843',
+                marginBottom: '0.6rem',
+                fontSize: '1.1rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem'
+              }}>
+                🧠 核心特征
+              </h4>
+              <p style={{
+                color: '#3d3227',
+                lineHeight: 1.6,
+                marginBottom: '1.2rem'
+              }}>
+                {analysis.characteristics}
+              </p>
+
+              <h4 style={{
+                fontWeight: 600,
+                color: '#6e5843',
+                marginBottom: '0.6rem',
+                fontSize: '1.1rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem'
+              }}>
+                💞 关系模式与潜在雷区
+              </h4>
+              <p style={{
+                color: '#3d3227',
+                lineHeight: 1.6,
+                marginBottom: '1.2rem'
+              }}>
+                {analysis.relationship_patterns}
+              </p>
+
+              <h4 style={{
+                fontWeight: 600,
+                color: '#6e5843',
+                marginBottom: '0.6rem',
+                fontSize: '1.1rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem'
+              }}>
+                🌱 成长与改善建议
+              </h4>
+              <ul style={{ paddingLeft: '1.4rem' }}>
+                {analysis.growth_advice
+                  .split(/\d\.\s/)
+                  .filter(item => item.trim() !== '')
+                  .map((advice, idx) => (
+                    <li key={idx} style={{
+                      color: '#3d3227',
+                      lineHeight: 1.6,
+                      marginBottom: '0.6rem'
+                    }}>
+                      <strong>{idx + 1}.</strong> {advice.trim()}
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
 
       <style>{`
@@ -264,8 +493,10 @@ const AttachmentTest = () => {
           0% { opacity: 0; transform: translateY(15px); }
           100% { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-slide {
-          animation: fadeSlide 0.5s ease;
+        @media (max-width: 500px) {
+          h1 {
+            font-size: 1.8rem !important;
+          }
         }
       `}</style>
     </div>
