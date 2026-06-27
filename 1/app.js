@@ -513,8 +513,13 @@ async function generateImage() {
         const canvas = await renderCardToCanvas();
         state.generatedImage = canvas.toDataURL('image/png', 1.0);
         
-        // 显示生成的图片
-        elements.generatedImageContainer.innerHTML = `<img src="${state.generatedImage}" alt="请假条" loading="lazy">`;
+        // 显示生成的图片（使用 DOM API 而非 innerHTML 拼接，避免 src 被污染时产生注入）
+        elements.generatedImageContainer.replaceChildren();
+        const img = document.createElement('img');
+        img.src = state.generatedImage;
+        img.alt = '请假条';
+        img.loading = 'lazy';
+        elements.generatedImageContainer.appendChild(img);
         
         elements.loadingOverlay.classList.remove('show');
         elements.shareModal.classList.add('show');
