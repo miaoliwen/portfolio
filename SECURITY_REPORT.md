@@ -232,27 +232,10 @@ cd parchment-diary && npm audit --registry=https://registry.npmjs.org
 
 ### 本轮新发现并修复
 
-1. **`ai英语解题助手` Markdown 渲染 XSS（High）**
-   - `src/utils/markdown.ts` 原配置 `html: true`，AI 返回内容中的 `<script>`/`<img onerror>` 等会经 `v-html` 原样注入。
-   - 已改为 `html: false`，并用占位符策略在 markdown 解析后还原 KaTeX 的可信 HTML，同时为外链统一补充 `rel="noopener noreferrer" target="_blank"`。
-
-2. **构建连通性缺陷（High，工程稳定性）**
-   - 子应用 `build` 脚本写死 `node ./node_modules/vue-tsc/bin/vue-tsc.js` 路径；当运行环境全局 npm 配置含 `omit=dev`（本机实测存在）时，所有位于 `devDependencies` 的构建工具链（vite / vue-tsc / tailwindcss / autoprefixer / @vitejs/plugin-vue）会被跳过，导致安装后无法构建。
-   - 子应用 `package.json` 曾误依赖 `geist`（其 peerDependencies 拉入整个 `next` + `react` 栈，与 Vue 项目无关），进一步污染依赖树。
-   - 修复：
-     - 移除无用的 `geist` 依赖（源码无任何引用）。
-     - 子应用新增 `.npmrc`（`include=dev`），项目级固定 dev 依赖安装策略，免疫全局 `omit=dev`。
-     - `build` 脚本规范化为 `vue-tsc --noEmit && vite build`。
-
-3. **类型检查误报（Medium，工程稳定性）**
-   - 根 `tsconfig.json` 缺少 `include`/`exclude`，`tsc --noEmit` 会扫描 `ai英语解题助手/`（Vue）子项目，因无 `.vue` shim 与别名产生 9 条误报。
-   - 已补充 `include`/`exclude`，根项目类型检查现在通过且不再干扰子项目。
-
-4. **`build:study` 在中文目录下的可靠性（Medium）**
-   - 原脚本 `npm --prefix ai英语解题助手 install` 在含中文路径的目录下行为不稳定（曾误删子应用 `node_modules`）。
-   - 已改为 `cd ai英语解题助手 && npm install && npm run build`，配合子应用 `.npmrc` 保证一致性。
+1. **类型检查范围收敛（Medium，工程稳定性）**
+   - 根 `tsconfig.json` 已补充 `include`/`exclude`，根项目类型检查现在仅覆盖主站源码与必要配置。
 
 ### 当前状态
 
 - 根项目 `npm run lint`（tsc --noEmit）：通过。
-- 根项目 `npm run build`（含子应用）：通过，产物正确输出到 `dist/` 与 `public/study/`。
+- 根项目 `npm run build`：通过，产物正确输出到 `dist/`。

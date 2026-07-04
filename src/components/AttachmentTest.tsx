@@ -168,7 +168,7 @@ const AttachmentTest = () => {
         background: '#fffcf5',
         backdropFilter: 'blur(18px)',
         WebkitBackdropFilter: 'blur(18px)',
-        boxShadow: '0 30px 50px rgba(0, 0, 0, 0.08), 0 12px 24px rgba(0, 0, 0, 0.06)',
+        boxShadow: '0 30px 50px rgba(42, 36, 28, 0.08), 0 12px 24px rgba(42, 36, 28, 0.06)',
         borderRadius: '2.5rem',
         padding: '2.5rem 2rem',
         transition: 'all 0.3s ease',
@@ -221,7 +221,7 @@ const AttachmentTest = () => {
                 background: '#fefaf5',
                 borderRadius: '1.8rem',
                 padding: '1.5rem 1.8rem',
-                boxShadow: '0 6px 14px rgba(0, 0, 0, 0.02)',
+                boxShadow: '0 6px 14px rgba(42, 36, 28, 0.04)',
                 border: `1px solid ${highlightedCards.has(question.id) ? '#c96b5a' : '#ede3d6'}`,
                 transition: '0.2s'
               }}
@@ -268,7 +268,7 @@ const AttachmentTest = () => {
                         marginRight: '0.15rem',
                         transition: '0.2s',
                         cursor: 'pointer',
-                        background: answers[question.id] === val ? '#b2905a' : 'white',
+                        background: answers[question.id] === val ? '#f97316' : '#fefcf9',
                         boxShadow: answers[question.id] === val ? 'inset 0 0 0 4px #fffcf5' : 'none'
                       }}
                     />
@@ -287,7 +287,7 @@ const AttachmentTest = () => {
             style={{
               background: 'linear-gradient(135deg, #b2926a 0%, #8b6d4f 100%)',
               border: '1px solid #d4b185',
-              color: 'white',
+              color: '#fefcf9',
               fontWeight: 500,
               fontSize: '1.2rem',
               padding: '1rem 2.2rem',
@@ -354,7 +354,7 @@ const AttachmentTest = () => {
               marginBottom: '1.8rem'
             }}>
               <div style={{
-                background: 'white',
+                background: '#fefcf9',
                 borderRadius: '2rem',
                 padding: '0.8rem 1.8rem',
                 textAlign: 'center',
@@ -375,7 +375,7 @@ const AttachmentTest = () => {
                 }}>{anxietyScore}</span>
               </div>
               <div style={{
-                background: 'white',
+                background: '#fefcf9',
                 borderRadius: '2rem',
                 padding: '0.8rem 1.8rem',
                 textAlign: 'center',

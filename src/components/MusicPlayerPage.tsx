@@ -281,7 +281,7 @@ export default function MusicPlayerPage() {
         </header>
 
         <section className="mb-10 mx-auto max-w-2xl relative sm:mb-12 md:mb-14">
-          <div className={`relative p-4 sm:p-5 md:p-6 card-paper transition-all duration-500 ${isEditorFocused ? "shadow-xl scale-[1.01]" : "opacity-95"}`}>
+          <div className={`relative p-4 sm:p-5 md:p-6 card-paper transition-all duration-500 ${isEditorFocused ? "shadow-warm-xl scale-[1.01]" : "opacity-95"}`}>
             <div className="mb-4 flex items-start gap-2 rounded-2xl border border-[#bfa88855] bg-[#f8f1e3] px-3 py-3 text-[12px] leading-5 text-[#5a4a34]">
               <Shield className="mt-0.5 h-4 w-4 shrink-0 text-[#8b5f2c]" />
               <p>Privacy mode is on. Notes remain only in this session and are removed when you refresh or close the page.</p>
@@ -412,7 +412,7 @@ export default function MusicPlayerPage() {
             </button>
 
             <div className="mb-3 flex items-center gap-3 pr-8">
-              <img src={track.cover} alt={track.title} className="h-12 w-12 rounded-lg object-cover shadow-sm" />
+              <img src={track.cover} alt={track.title} className="h-12 w-12 rounded-lg object-cover shadow-warm-sm" />
               <div className="min-w-0">
                 <h2 className="truncate text-sm font-semibold">{track.title}</h2>
                 <p className="truncate text-xs opacity-70">{track.artist}</p>
@@ -429,7 +429,7 @@ export default function MusicPlayerPage() {
                 onPointerUp={onPointerUp}
                 className="group relative h-5 cursor-pointer touch-none"
               >
-                <div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-[#d8ccb4] transition-all group-hover:h-2">
+                <div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-warm-300 transition-all group-hover:h-2">
                   <div className="h-full rounded-full bg-[#8b5f2c]" style={{ width: `${percent}%` }} />
                 </div>
               </div>

@@ -48,16 +48,16 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="relative min-h-screen flex flex-col items-center justify-center py-16 md:py-24 overflow-hidden">
+    <section id="about" className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden py-16 md:py-24">
       {/* Background Gradient Orbs */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 -right-1/4 w-[40%] h-[40%] bg-primary/15 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-1/3 -left-1/4 w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[100px] animate-pulse delay-700" />
+        <div className="aurora-blob -right-1/4 top-1/3 h-[40%] w-[40%] bg-coral-500/10 dark:bg-coral-400/15" />
+        <div className="aurora-blob -left-1/4 bottom-1/3 h-[40%] w-[40%] bg-teal-500/10 dark:bg-teal-500/10" />
       </div>
 
       <div className="container relative z-10 px-4 mx-auto">
         <motion.h2 
-          className="text-3xl sm:text-4xl md:text-5xl font-bold mb-10 sm:mb-12 md:mb-16 text-center"
+          className="mb-10 text-center text-4xl font-normal tracking-[-0.96px] text-warm-800 sm:mb-12 sm:text-5xl md:mb-16 md:text-6xl dark:text-warm-50"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -80,18 +80,18 @@ export default function About() {
                 {skills.map((skill, i) => (
                   <motion.div
                     key={i}
-                    className="flex items-start gap-3 sm:gap-4 w-full"
+                    className="bento-tile flex w-full items-start gap-3 p-4 sm:gap-4 sm:p-5"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                   >
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl sm:rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-coral-500/10 sm:h-11 sm:w-11 md:h-12 md:w-12">
                       <skill.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0 text-left">
-                      <h3 className="font-semibold mb-1 sm:mb-2 text-base sm:text-lg md:text-xl">{skill.title}</h3>
-                      <p className="text-sm sm:text-base md:text-lg text-muted-foreground">{skill.desc}</p>
+                      <h3 className="mb-1 text-base font-medium text-warm-900 sm:mb-2 sm:text-lg md:text-xl dark:text-warm-50">{skill.title}</h3>
+                      <p className="text-sm leading-relaxed text-warm-600 sm:text-base md:text-lg dark:text-warm-400">{skill.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -107,7 +107,7 @@ export default function About() {
               className="order-1 lg:order-2 flex justify-center lg:justify-end"
             >
               <div className="relative w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px]">
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-transparent">
+                <div className="surface-panel relative aspect-square overflow-hidden rounded-[20px] bg-warm-25 p-3 dark:bg-warm-900">
                   <AnimatePresence mode="wait">
                     <motion.img
                       key={avatarImages[avatarIndex]}
@@ -124,7 +124,7 @@ export default function About() {
                   <button
                     type="button"
                     onClick={() => setAvatarIndex((prev) => (prev - 1 + avatarImages.length) % avatarImages.length)}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/35 p-1.5 text-white transition-colors hover:bg-black/55"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-warm-900/55 p-1.5 text-warm-50 transition-colors hover:bg-warm-900/70"
                     aria-label="上一张头像"
                   >
                     <ChevronLeft className="h-4 w-4" />
@@ -132,7 +132,7 @@ export default function About() {
                   <button
                     type="button"
                     onClick={() => setAvatarIndex((prev) => (prev + 1) % avatarImages.length)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/35 p-1.5 text-white transition-colors hover:bg-black/55"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-warm-900/55 p-1.5 text-warm-50 transition-colors hover:bg-warm-900/70"
                     aria-label="下一张头像"
                   >
                     <ChevronRight className="h-4 w-4" />
@@ -145,17 +145,17 @@ export default function About() {
                       type="button"
                       onClick={() => setAvatarIndex(index)}
                       className={`h-2 w-2 rounded-full transition-all ${
-                        avatarIndex === index ? "bg-primary w-5" : "bg-muted-foreground/40 hover:bg-muted-foreground/70"
+                        avatarIndex === index ? "w-5 bg-coral-500" : "bg-warm-300 hover:bg-warm-400 dark:bg-warm-700 dark:hover:bg-warm-600"
                       }`}
                       aria-label={`切换到第 ${index + 1} 张头像`}
                     />
                   ))}
                 </div>
                 {/* 装饰性元素 */}
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
-                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl" />
+                <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-coral-500/10 blur-2xl" />
+                <div className="absolute -bottom-4 -left-4 h-32 w-32 rounded-full bg-teal-500/10 blur-2xl" />
                 {/* 文字说明 */}
-                <p className="mt-4 text-center text-sm sm:text-base text-muted-foreground font-sans">
+                <p className="mt-4 text-center font-sans text-sm text-warm-600 sm:text-base dark:text-warm-400">
                   {t.about.subtitle}
                 </p>
               </div>

@@ -86,17 +86,17 @@ export default function Experience() {
   ];
 
   return (
-    <section id="experience" className="relative flex flex-col items-center justify-start py-16 md:py-24 overflow-hidden min-h-screen">
+    <section id="experience" className="relative flex min-h-screen flex-col items-center justify-start overflow-hidden py-16 md:py-24">
       {/* Background Gradient Orbs */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-1/4 w-[40%] h-[40%] bg-primary/15 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute top-1/2 -right-1/4 w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[100px] animate-pulse delay-700" />
-        <div className="absolute bottom-1/4 -left-1/4 w-[40%] h-[40%] bg-purple-500/10 rounded-full blur-[100px] animate-pulse delay-1000" />
+        <div className="aurora-blob -left-1/4 top-1/4 h-[40%] w-[40%] bg-coral-500/10 dark:bg-coral-400/15" />
+        <div className="aurora-blob -right-1/4 top-1/2 h-[40%] w-[40%] bg-teal-500/10 dark:bg-teal-500/10" />
+        <div className="aurora-blob -left-1/4 bottom-1/4 h-[40%] w-[40%] bg-coral-400/10 dark:bg-coral-400/10" />
       </div>
 
       <div className="container relative z-10 px-4 mx-auto w-full max-w-7xl flex-1 flex flex-col">
         <motion.h2 
-          className="text-3xl md:text-4xl font-bold mb-6 text-center"
+          className="mb-6 text-center text-4xl font-normal tracking-[-0.96px] text-warm-800 md:text-6xl dark:text-warm-50"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -106,7 +106,7 @@ export default function Experience() {
         </motion.h2>
 
         <motion.p
-          className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto"
+          className="mx-auto mb-16 max-w-2xl text-center leading-relaxed text-warm-600 dark:text-warm-400"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -134,15 +134,15 @@ export default function Experience() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer group"
+                      className="group flex cursor-pointer items-center gap-3 rounded-xl p-2 transition-colors hover:bg-coral-500/10"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-sm font-bold text-primary flex-shrink-0">
+                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-coral-500/15 to-coral-400/10 text-sm font-bold text-coral-600 dark:text-coral-400">
                         {item.icon}
                       </div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate flex-1">
+                      <span className="flex-1 truncate text-sm font-medium text-warm-700 dark:text-warm-300">
                         {item.name}
                       </span>
-                      <ExternalLink className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ExternalLink className="h-3.5 w-3.5 text-warm-400 opacity-0 transition-opacity group-hover:opacity-100 dark:text-warm-500" />
                     </a>
                   ))}
                 </div>
@@ -159,7 +159,7 @@ export default function Experience() {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-warm-600 dark:text-warm-400">
             {t.experience.subtitle}
           </p>
         </motion.div>

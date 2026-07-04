@@ -4,7 +4,13 @@ const path = require('path');
 
 const rootDir = __dirname;
 
-function getSafeFilePath(requestUrl) {
+const publicFiles = new Map([
+    ['/', 'index.html'],
+    ['/index.html', 'index.html'],
+    ['/app.js', 'app.js']
+]);
+
+function getPublicFilePath(requestUrl) {
     let pathname;
     try {
         pathname = decodeURIComponent((requestUrl || '/').split('?')[0].split('#')[0]);
@@ -12,15 +18,15 @@ function getSafeFilePath(requestUrl) {
         return null;
     }
 
-    const targetPath = pathname === '/' ? '/index.html' : pathname;
-    const resolvedPath = path.resolve(rootDir, `.${targetPath}`);
-    const relativePath = path.relative(rootDir, resolvedPath);
-
-    if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
+    // Only serve the small, explicit public surface. Do not expose server code,
+    // dotfiles, package files, source maps, or any future private files that are
+    // accidentally placed in this directory.
+    const publicFile = publicFiles.get(pathname);
+    if (!publicFile) {
         return null;
     }
 
-    return resolvedPath;
+    return path.join(rootDir, publicFile);
 }
 
 const contentTypes = {
@@ -56,9 +62,9 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    const filePath = getSafeFilePath(req.url);
+    const filePath = getPublicFilePath(req.url);
     if (!filePath) {
-        writeResponse(res, 400, { 'Content-Type': 'text/plain; charset=utf-8' }, 'Bad Request');
+        writeResponse(res, 404, { 'Content-Type': 'text/plain; charset=utf-8' }, 'File not found');
         return;
     }
 

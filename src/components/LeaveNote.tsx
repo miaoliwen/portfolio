@@ -215,11 +215,11 @@ ${new Date().toLocaleDateString("en-US")}`;
     canvas.height = 1000;
 
     // Theme colors
-    const bgColor = isDarkTheme ? "#1f1f21" : "#ffffff";
-    const textColor = isDarkTheme ? "#ffffff" : "#1d1d1f";
-    const textSecondary = isDarkTheme ? "rgba(255, 255, 255, 0.6)" : "rgba(0, 0, 0, 0.6)";
-    const textTertiary = isDarkTheme ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)";
-    const dividerColor = isDarkTheme ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)";
+    const bgColor = isDarkTheme ? "#1a1611" : "#fefcf9";
+    const textColor = isDarkTheme ? "#fdf8f0" : "#2a241c";
+    const textSecondary = isDarkTheme ? "#b8a58a" : "#7a6a54";
+    const textTertiary = isDarkTheme ? "#ede0cc" : "#3f362a";
+    const dividerColor = isDarkTheme ? "rgba(184, 165, 138, 0.24)" : "rgba(218, 203, 175, 0.7)";
 
     // Background
     ctx.fillStyle = bgColor;
@@ -227,8 +227,8 @@ ${new Date().toLocaleDateString("en-US")}`;
 
     // Top gradient line
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    gradient.addColorStop(0, "#0071e3");
-    gradient.addColorStop(1, "#2997ff");
+    gradient.addColorStop(0, "#f97316");
+    gradient.addColorStop(1, "#fb923c");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, 4);
 
@@ -245,7 +245,7 @@ ${new Date().toLocaleDateString("en-US")}`;
 
     // Subtitle
     ctx.fillStyle = textSecondary;
-    ctx.font = "12px Inter, sans-serif";
+    ctx.font = "12px Geist, Noto Sans SC, sans-serif";
     ctx.fillText(isZh ? "LEAVE APPLICATION" : "OFFICIAL DOCUMENT", canvas.width / 2, y);
     y += 60;
 
@@ -350,15 +350,15 @@ ${new Date().toLocaleDateString("en-US")}`;
   };
 
   const duration = calculateDuration();
-  const previewTextPrimary = isDarkTheme ? "text-white/90" : "text-gray-900";
-  const previewTextSecondary = isDarkTheme ? "text-white/70" : "text-gray-600";
-  const previewTextMuted = isDarkTheme ? "text-white/50" : "text-gray-500";
-  const previewTitleStrong = isDarkTheme ? "text-white" : "text-gray-900";
-  const previewBorder = isDarkTheme ? "border-white/10" : "border-black/10";
-  const previewEmptyText = isDarkTheme ? "text-white/40" : "text-gray-500";
+  const previewTextPrimary = isDarkTheme ? "text-warm-50" : "text-warm-900";
+  const previewTextSecondary = isDarkTheme ? "text-warm-300" : "text-warm-600";
+  const previewTextMuted = isDarkTheme ? "text-warm-400" : "text-warm-500";
+  const previewTitleStrong = isDarkTheme ? "text-warm-50" : "text-warm-900";
+  const previewBorder = isDarkTheme ? "border-warm-700" : "border-warm-200";
+  const previewEmptyText = isDarkTheme ? "text-warm-500" : "text-warm-500";
 
   return (
-    <section id="leave-note" className="py-20 md:py-32 bg-muted/30">
+    <section id="leave-note" className="bg-warm-75/35 py-20 md:py-32 dark:bg-warm-950/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -455,10 +455,10 @@ ${new Date().toLocaleDateString("en-US")}`;
                       <button
                         key={type}
                         onClick={() => handleInputChange("leaveType", type)}
-                        className={`px-4 py-2 rounded-full text-sm transition-all ${
+                        className={`rounded-full border px-4 py-2 text-sm transition-all ${
                           formData.leaveType === type
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted hover:bg-muted/80 text-muted-foreground"
+                            ? "border-coral-500 bg-coral-500 text-primary-foreground shadow-warm-sm"
+                            : "border-warm-300/60 bg-warm-25/60 text-warm-600 hover:bg-warm-75 dark:border-warm-700 dark:bg-warm-900/60 dark:text-warm-400"
                         }`}
                       >
                         {type}
@@ -497,7 +497,7 @@ ${new Date().toLocaleDateString("en-US")}`;
                     />
                   </div>
                   {duration && (
-                    <div className="flex items-center gap-2 text-sm text-primary bg-primary/10 px-3 py-2 rounded-md">
+                    <div className="flex items-center gap-2 rounded-2xl bg-coral-500/10 px-3 py-2 text-sm text-coral-700 dark:text-coral-400">
                       <Clock className="w-4 h-4" />
                       <span>
                         {isZh ? "共计" : "Total"} {duration}
@@ -540,7 +540,7 @@ ${new Date().toLocaleDateString("en-US")}`;
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="bg-card/50 border-border/50">
+            <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
@@ -550,7 +550,7 @@ ${new Date().toLocaleDateString("en-US")}`;
                   {/* Theme Toggle */}
                   <button
                     onClick={() => setIsDarkTheme(!isDarkTheme)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 transition-colors text-sm"
+                    className="flex items-center gap-2 rounded-full border border-warm-300/50 bg-warm-75 px-3 py-1.5 text-sm text-warm-700 transition-colors hover:bg-warm-100 dark:border-warm-700 dark:bg-warm-800 dark:text-warm-300"
                     title={isZh ? "切换主题" : "Toggle Theme"}
                   >
                     {isDarkTheme ? (
@@ -569,11 +569,11 @@ ${new Date().toLocaleDateString("en-US")}`;
               </CardHeader>
               <CardContent>
                 <div className={`${isDarkTheme 
-                  ? "bg-gradient-to-br from-[#2a2a2c] to-[#1f1f21] text-white/90" 
-                  : "bg-gradient-to-br from-[#f5f5f7] to-[#ffffff] text-gray-900"
-                } rounded-lg p-6 md:p-8 relative overflow-hidden transition-colors duration-300`}>
+                  ? "bg-gradient-to-br from-warm-900 to-warm-950 text-warm-50" 
+                  : "bg-gradient-to-br from-warm-25 to-warm-50 text-warm-900"
+                } relative overflow-hidden rounded-[20px] border border-warm-300/30 p-6 shadow-warm-card transition-colors duration-300 md:p-8 dark:border-warm-700/60`}>
                   {/* Top gradient line */}
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary to-primary/70" />
+                  <div className="absolute left-0 right-0 top-0 h-[3px] bg-gradient-to-r from-coral-500 to-coral-400" />
 
                   {formData.applicantName ? (
                     <div className={`font-serif ${previewTextPrimary} leading-relaxed whitespace-pre-wrap`}>

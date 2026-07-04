@@ -23,7 +23,7 @@ interface ImageItem {
 // 图片加载状态组件
 function ImageLoader() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
+    <div className="absolute inset-0 flex items-center justify-center bg-warm-100/60 dark:bg-warm-800/50">
       <Loader2 className="w-8 h-8 animate-spin text-primary" />
     </div>
   );
@@ -47,7 +47,7 @@ function GalleryCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-muted/20"
+      className="bento-tile group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-[20px] bg-warm-100/60 dark:bg-warm-800/50"
       onClick={onClick}
     >
       {isLoading && <ImageLoader />}
@@ -60,9 +60,9 @@ function GalleryCard({
         onLoad={() => setIsLoading(false)}
         referrerPolicy="no-referrer"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-t from-warm-950/65 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <p className="text-white font-medium text-sm">{image.title}</p>
+        <p className="text-warm-50 font-medium text-sm">{image.title}</p>
       </div>
     </motion.div>
   );
@@ -126,25 +126,27 @@ function Lightbox({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-warm-950/95"
           onClick={onClose}
         >
           {/* 关闭按钮 */}
           <button
-            className="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white transition-colors rounded-full bg-white/10 hover:bg-white/20"
+            className="absolute top-4 right-4 z-10 p-2 text-warm-50/80 hover:text-warm-50 transition-colors rounded-full bg-warm-25/10 hover:bg-warm-25/20"
+            aria-label="Close gallery"
             onClick={onClose}
           >
             <X className="w-6 h-6" />
           </button>
 
           {/* 图片计数器 */}
-          <div className="absolute top-4 left-4 z-10 px-3 py-1 text-sm text-white/80 bg-white/10 rounded-full">
+          <div className="absolute top-4 left-4 z-10 px-3 py-1 text-sm text-warm-50/80 bg-warm-25/10 rounded-full">
             {currentIndex + 1} / {images.length}
           </div>
 
           {/* 上一张按钮 */}
           <button
-            className="absolute left-4 z-10 p-3 text-white/80 hover:text-white transition-colors rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30"
+            className="absolute left-4 z-10 p-3 text-warm-50/80 hover:text-warm-50 transition-colors rounded-full bg-warm-25/10 hover:bg-warm-25/20 disabled:opacity-30"
+            aria-label="Previous image"
             onClick={(e) => {
               e.stopPropagation();
               onPrev();
@@ -166,7 +168,7 @@ function Lightbox({
           >
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <Loader2 className="w-12 h-12 animate-spin text-white/50" />
+                <Loader2 className="w-12 h-12 animate-spin text-warm-50/50" />
               </div>
             )}
             <img
@@ -182,7 +184,8 @@ function Lightbox({
 
           {/* 下一张按钮 */}
           <button
-            className="absolute right-4 z-10 p-3 text-white/80 hover:text-white transition-colors rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30"
+            className="absolute right-4 z-10 p-3 text-warm-50/80 hover:text-warm-50 transition-colors rounded-full bg-warm-25/10 hover:bg-warm-25/20 disabled:opacity-30"
+            aria-label="Next image"
             onClick={(e) => {
               e.stopPropagation();
               onNext();
@@ -193,7 +196,7 @@ function Lightbox({
           </button>
 
           {/* 图片标题 */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-4 py-2 text-white text-center bg-white/10 rounded-lg backdrop-blur-sm">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-4 py-2 text-warm-50 text-center bg-warm-25/10 rounded-lg backdrop-blur-sm">
             <p className="font-medium">{currentImage.title}</p>
           </div>
         </motion.div>
@@ -229,12 +232,12 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="relative min-h-screen flex flex-col items-center justify-center py-16 md:py-24 overflow-hidden"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden py-16 md:py-24"
     >
       {/* Background Gradient Orbs */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-1/4 w-[40%] h-[40%] bg-primary/15 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-1/4 -right-1/4 w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[100px] animate-pulse delay-700" />
+        <div className="aurora-blob -left-1/4 top-1/4 h-[40%] w-[40%] bg-coral-500/10 dark:bg-coral-400/15" />
+        <div className="aurora-blob -right-1/4 bottom-1/4 h-[40%] w-[40%] bg-teal-500/10 dark:bg-teal-500/10" />
       </div>
 
       <div className="container relative z-10 px-4 mx-auto">
@@ -246,12 +249,12 @@ export default function Projects() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold">{t.projects.title}</h2>
+            <h2 className="text-4xl font-normal tracking-[-0.96px] text-warm-800 md:text-6xl dark:text-warm-50">{t.projects.title}</h2>
           </div>
         </motion.div>
 
         {/* 图片网格 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-6">
           {galleryImages.map((image, index) => (
             <GalleryCard
               key={index}

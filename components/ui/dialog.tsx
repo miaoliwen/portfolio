@@ -14,7 +14,7 @@ const Dialog = ({ children, open, onOpenChange }: { children: React.ReactNode; o
   return (
     <DialogContext.Provider value={{ onOpenChange }}>
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={() => onOpenChange?.(false)} />
+        <div className="fixed inset-0 bg-warm-950/80 backdrop-blur-sm" onClick={() => onOpenChange?.(false)} />
         <div className="relative z-50">{children}</div>
       </div>
     </DialogContext.Provider>
@@ -31,7 +31,7 @@ const DialogContent = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg",
+        "surface-panel fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 p-6 duration-200",
         className
       )}
       {...props}
@@ -39,7 +39,7 @@ const DialogContent = React.forwardRef<
       {children}
       <button
         onClick={() => onOpenChange?.(false)}
-        className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+        className="absolute right-4 top-4 rounded-full p-1 text-warm-600 opacity-70 transition-opacity hover:bg-coral-500/10 hover:text-warm-900 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring disabled:pointer-events-none dark:text-warm-400 dark:hover:text-warm-50"
       >
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>

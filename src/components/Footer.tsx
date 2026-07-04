@@ -111,10 +111,10 @@ export default function Footer() {
   }, [displayText, isDeleting, wordIndex, typeNextChar]);
 
   return (
-    <footer className="relative py-12 overflow-hidden">
+    <footer className="relative overflow-hidden py-12">
       {/* Background Gradient Orbs */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[30%] h-[50%] bg-primary/10 rounded-full blur-[80px] animate-pulse" />
+        <div className="aurora-blob left-1/2 top-0 h-[50%] w-[30%] -translate-x-1/2 bg-coral-500/10 dark:bg-coral-400/15" />
       </div>
 
       <div className="container relative z-10 px-4 mx-auto">
@@ -127,29 +127,29 @@ export default function Footer() {
         >
           <div className="flex items-center gap-2">
             <Terminal className="w-5 h-5 text-primary" />
-            <span className="font-bold tracking-tight text-sm md:text-base lg:text-lg min-w-[80px]">
+            <span className="min-w-[80px] text-sm font-medium tracking-[-0.14px] text-warm-900 md:text-base lg:text-lg dark:text-warm-50">
               {displayText}
               <span className="animate-pulse">|</span>
             </span>
           </div>
 
           <div className="flex items-center gap-1 md:gap-2">
-            <a href="https://github.com/miaoliwen" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground transition-colors w-11 h-11 flex items-center justify-center">
+            <a href="https://github.com/miaoliwen" target="_blank" rel="noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full text-warm-600 transition-all duration-300 hover:-translate-y-px hover:bg-coral-500/10 hover:text-warm-900 dark:text-warm-400 dark:hover:text-warm-50">
               <Github className="w-5 h-5 md:w-4 md:h-4" />
             </a>
-            <a href="https://v.douyin.com/ecDXz9yqG6Q/" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground transition-colors w-11 h-11 flex items-center justify-center">
+            <a href="https://v.douyin.com/ecDXz9yqG6Q/" target="_blank" rel="noreferrer" className="flex h-11 w-11 items-center justify-center rounded-full text-warm-600 transition-all duration-300 hover:-translate-y-px hover:bg-coral-500/10 hover:text-warm-900 dark:text-warm-400 dark:hover:text-warm-50">
               <TikTokIcon className="w-5 h-5 md:w-4 md:h-4" />
             </a>
             <button
               onClick={handleCopy}
-              className={`text-muted-foreground hover:text-foreground transition-colors w-11 h-11 flex items-center justify-center rounded-lg ${copied ? 'text-green-500 bg-green-500/10' : ''}`}
+              className={`flex h-11 w-11 items-center justify-center rounded-full text-warm-600 transition-all duration-300 hover:-translate-y-px hover:bg-coral-500/10 hover:text-warm-900 dark:text-warm-400 dark:hover:text-warm-50 ${copied ? 'bg-coral-500/10 text-coral-600 dark:text-coral-400' : ''}`}
               title="Copy email"
             >
               {copied ? <Check className="w-5 h-5 md:w-4 md:h-4" /> : <Mail className="w-5 h-5 md:w-4 md:h-4" />}
             </button>
           </div>
 
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-warm-600 dark:text-warm-400">
             @2026 Amao
           </p>
         </motion.div>
